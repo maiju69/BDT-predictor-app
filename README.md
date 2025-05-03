@@ -1,66 +1,68 @@
-import React, { useState } from "react";
+# HGZY Prediction App
 
-const outcomes = ["Big", "Small"];
-const colors = ["Red", "Green"];
+A machine learning application designed to predict outcomes on the HGZY color trading platform.
 
-export default function HgzyPredictor() {
-  const [history, setHistory] = useState([]);
-  const [prediction, setPrediction] = useState(null);
+---
 
-  const addRound = (number, color) => {
-    const bigSmall = number >= 5 ? "Big" : "Small";
-    const round = { number, color, bigSmall };
-    const updated = [...history, round];
-    setHistory(updated);
-    predictNext(updated);
-  };
+## Features
+- Collects and processes historical data from the HGZY platform.
+- Implements machine learning models to predict future outcomes.
+- Visualizes predictions and trends for better decision-making.
 
-  const predictNext = (data) => {
-    const last = data.slice(-5);
-    const smallCount = last.filter(r => r.bigSmall === "Small").length;
-    const bigCount = last.length - smallCount;
+---
 
-    const redCount = last.filter(r => r.color === "Red").length;
-    const greenCount = last.length - redCount;
+## Folder Structure
+```
+src/
+├── data/           # Data processing scripts
+├── models/         # Machine learning models
+├── utils/          # Utility functions
+├── app.py          # Main application script
+data/               # Folder for raw and processed data
+notebooks/          # Jupyter notebooks for analysis & prototyping
+tests/              # Unit and integration tests
+requirements.txt    # List of dependencies
+.gitignore          # Files and folders to ignore in Git
+README.md           # Documentation for the project
+LICENSE             # License for your project
+```
 
-    const likelySize = smallCount > bigCount ? "Small" : "Big";
-    const likelyColor = redCount > greenCount ? "Red" : "Green";
+---
 
-    setPrediction({ size: likelySize, color: likelyColor });
-  };
+## Getting Started
 
-  return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Hgzy Outcome Predictor</h1>
+### Prerequisites
+- Install [Python 3.8+](https://www.python.org/downloads/).
+- Install the necessary dependencies:
+  ```bash
+  pip install -r requirements.txt
+  ```
 
-      <div className="grid grid-cols-3 gap-2 mb-4">
-        {[...Array(10).keys()].map(n => (
-          <button
-            key={n}
-            className="bg-blue-100 p-2 rounded hover:bg-blue-200"
-            onClick={() => addRound(n, n === 0 ? "Red" : n === 5 ? "Green" : Math.random() > 0.5 ? "Red" : "Green")}
-          >
-            {n}
-          </button>
-        ))}
-      </div>
+### Running the App
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/maiju69/hgzy-prediction-app.git
+   cd hgzy-prediction-app
+   ```
+2. Execute the main script:
+   ```bash
+   python src/app.py
+   ```
 
-      {prediction && (
-        <div className="bg-green-100 p-4 rounded">
-          <h2 className="text-xl font-semibold">Next Likely Outcome</h2>
-          <p><strong>Big/Small:</strong> {prediction.size}</p>
-          <p><strong>Red/Green:</strong> {prediction.color}</p>
-        </div>
-      )}
+---
 
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-2">History</h3>
-        <ul className="list-disc list-inside">
-          {history.map((r, i) => (
-            <li key={i}>Round {i + 1}: {r.number} - {r.bigSmall} / {r.color}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
+## How It Works
+1. **Data Collection**: The app collects historical data from the HGZY platform.
+2. **Data Processing**: The data is cleaned and preprocessed for analysis.
+3. **Model Training**: A machine learning model is trained on the processed data.
+4. **Prediction**: The model predicts future outcomes based on patterns in the data.
+
+---
+
+## Contributions
+Contributions are welcome! Feel free to fork this repository and submit a pull request.
+
+---
+
+## License
+This project is licensed under the MIT License. See the `LICENSE` file for details.
